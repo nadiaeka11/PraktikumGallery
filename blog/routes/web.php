@@ -1,8 +1,8 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
-use App\Http\Controllers\PortfolioController;
-use App\Http\Controllers\SendEmailController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\ImageController;
 
 
 /*
@@ -29,9 +29,17 @@ Route::controller(LoginRegisterController::class)->group(function() {
     Route::post('/logout', 'logout')->name('logout');
 });
 
-Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio.index');
+Route::get('/create-file', [FileController::class,'createfile']);
+Route::get('/get-file', [FileController::class,'getfile']);
+Route::get('/download-file', [FileController::class,'downloadFile']);
+Route::get('/copy-file', [FileController::class,'copyFile']);
+Route::get('/move-file', [FileController::class,'moveFile']);
 
-Route::get('/send-mail', [SendEmailController::class, 'index'])->name('kirim-email');
+Route::get('/users', [ImageController::class, 'showUsers'])->name('users');
+Route::get('/users/{id}/edit', [ImageController::class, 'edit'])->name('edit');
+Route::put('/users/{id}', [ImageController::class, 'update'])->name('users.update');
+Route::delete('/users/{id}', [ImageController::class, 'destroy'])->name('users.delete');
+Route::get('/users/{user}/resize', [ImageController::class, 'resizeForm'])->name('users.resize');
+Route::post('/users/{user}/resize', [ImageController::class, 'resizeImage'])->name('resizeImage');
 
-Route::post('/post-email', [SendEmailController::class, 'store'])->name('post-email');
 

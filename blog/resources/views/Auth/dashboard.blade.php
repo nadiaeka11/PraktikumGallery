@@ -14,7 +14,12 @@
                 @else
                     <div class="alert alert-success">
                         You are logged in!
-                    </div>       
+                    </div>
+
+                    <!-- Tombol untuk ke halaman users di sini -->
+                    <div class="mb-3 row">
+                        <a href="{{ route('users') }}" class="col-md-3 offset-md-5 btn btn-primary">Go to Users</a>
+                    </div>
                 @endif                
             </div>
         </div>
