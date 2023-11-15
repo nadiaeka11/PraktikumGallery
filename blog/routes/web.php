@@ -1,8 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
-use App\Http\Controllers\FileController;
-use App\Http\Controllers\ImageController;
 use App\Http\Controllers\GalleryController;
 
 
@@ -30,19 +28,6 @@ Route::controller(LoginRegisterController::class)->group(function() {
     Route::get('/dashboard', 'dashboard')->name('dashboard');
     Route::post('/logout', 'logout')->name('logout');
 });
-
-Route::get('/create-file', [FileController::class,'createfile']);
-Route::get('/get-file', [FileController::class,'getfile']);
-Route::get('/download-file', [FileController::class,'downloadFile']);
-Route::get('/copy-file', [FileController::class,'copyFile']);
-Route::get('/move-file', [FileController::class,'moveFile']);
-
-Route::get('/users', [ImageController::class, 'showUsers'])->name('users');
-Route::get('/users/{id}/edit', [ImageController::class, 'edit'])->name('edit');
-Route::put('/users/{id}', [ImageController::class, 'update'])->name('users.update');
-Route::delete('/users/{id}', [ImageController::class, 'destroy'])->name('users.delete');
-Route::get('/users/{user}/resize', [ImageController::class, 'resizeForm'])->name('users.resize');
-Route::post('/users/{user}/resize', [ImageController::class, 'resizeImage'])->name('resizeImage');
 
 Route::resource('gallery', GalleryController::class);
 Route::get('/coba', function () {

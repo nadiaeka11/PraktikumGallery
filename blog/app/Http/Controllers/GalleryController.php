@@ -15,8 +15,8 @@ class GalleryController extends Controller
        $data = array(
            'id' => "posts",
            'menu' => 'Gallery',
-           'galleries' => Post::where('picture', '!=', 
-   '')->whereNotNull('picture')->orderBy('created_at', 'desc')->paginate(30)
+           'galleries' => Post::where('picture', '!=', '')
+           ->whereNotNull('picture')->orderBy('created_at', 'desc')->paginate(30)
        );
        return view('gallery.index')->with($data);
     }
@@ -40,26 +40,37 @@ class GalleryController extends Controller
            'description' => 'required',
            'picture' => 'image|nullable|max:1999'
        ]);
-       if ($request->hasFile('picture')) {
-           $filenameWithExt = $request->file('picture')->getClientOriginalName();
-           $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-           $extension = $request->file('picture')->getClientOriginalExtension();
-           $basename = uniqid() . time();
-           $smallFilename  = "small_{$basename}.{$extension}";
-           $mediumFilename  = "medium_{$basename}.{$extension}";
-           $largeFilename  = "large_{$basename}.{$extension}";
-           $filenameSimpan = "{$basename}.{$extension}";
-           $path = $request->file('picture')->storeAs('posts_image', $filenameSimpan);
-       } else {
-           $filenameSimpan = 'noimage.png';
-       }
+
+       try {
+            if ($request->hasFile('picture')) {
+                $filenameWithExt = $request->file('picture')->getClientOriginalName();
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $extension = $request->file('picture')->getClientOriginalExtension();
+                $basename = uniqid() . time();
+                $smallFilename  = "small_{$basename}.{$extension}";
+                $mediumFilename  = "medium_{$basename}.{$extension}";
+                $largeFilename  = "large_{$basename}.{$extension}";
+                $filenameSimpan = "{$basename}.{$extension}";
+                $path = $request->file('picture')->storeAs('posts_image', $filenameSimpan);
+
+                // Tambahkan URL gambar ke data yang akan dikirimkan ke tampilan
+                $imageUrl = asset('storage/app/public/posts_image/' . $filenameSimpan);
+
+            } else {
+                $filenameSimpan = 'noimage.png';
+            }
+
+        } catch (\Throwable $th) {
+        dd($th);
+        }
+
        // dd($request->input());
        $post = new Post;
        $post->picture = $filenameSimpan;
        $post->title = $request->input('title');
        $post->description = $request->input('description');
        $post->save();
-       return redirect('gallery')->with('success', 'Berhasil menambahkan data baru');
+       return redirect('gallery')->with('success', 'Berhasil menambahkan data baru')->with('imageUrl', $imageUrl);
     }
    
 
