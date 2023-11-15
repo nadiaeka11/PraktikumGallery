@@ -3,6 +3,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\GalleryController;
+
 
 
 /*
@@ -42,4 +44,7 @@ Route::delete('/users/{id}', [ImageController::class, 'destroy'])->name('users.d
 Route::get('/users/{user}/resize', [ImageController::class, 'resizeForm'])->name('users.resize');
 Route::post('/users/{user}/resize', [ImageController::class, 'resizeImage'])->name('resizeImage');
 
-
+Route::resource('gallery', GalleryController::class);
+Route::get('/coba', function () {
+    return view('gallery.create');
+});

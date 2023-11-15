@@ -31,9 +31,4 @@ class FileController extends Controller
     public function moveFile(){
         Storage::copy("file.txt", "move/file.txt");
     }
-
-    public function add(){
-        Storage::copy("file.txt", "move/file.txt");
-    }
-
 }
